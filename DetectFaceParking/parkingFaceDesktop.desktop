@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=parking_face
+Comment=Just use it
+Path=/opt/parking_face
+Exec=/opt/parking_face/parking_face
+Icon=logo

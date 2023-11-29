@@ -1,0 +1,58 @@
+vo file ParkingWiget.py mo parie 3 cho
+pip3 install PyInstaller
+#step 1:
+pyinstaller app.py
+
+#step 2 copy file build.spec o source cu
+pyinstaller build.spec
+
+mkdir -p package/opt
+mkdir -p package/usr/share/applications
+mkdir -p package/usr/share/icons/hicolor/scalable/apps
+
+cp -r dist/parking_face package/opt/parking_face
+cp logo_parking_face.png package/usr/share/icons/hicolor/scalable/apps/logo_parking_face.png
+cp parkingFaceDesktop.desktop package/usr/share/applications
+
+find package/opt/parking_face -type f -exec chmod 777 -- {} +
+find package/opt/parking_face -type d -exec chmod 777 -- {} +
+find package/usr/share -type f -exec chmod 777 -- {} +
+chmod +x package/opt/parking_face/parking_face
+
+
+cp -r /home/linh/anaconda3/envs/DetectFaceParking_1/lib/python3.8/site-packages/* /home/linh/Documents/AI/DetectFaceParking/package/opt/parking_face/_internal
+
+find package/opt/parking_face -type f -exec chmod 777 -- {} +
+find package/opt/parking_face -type d -exec chmod 777 -- {} +
+find package/usr/share -type f -exec chmod 777 -- {} +
+chmod +x package/opt/parking_face/parking_face
+
+# chi can khi cai lan dau
+sudo apt-get install ruby-dev build-essential && sudo gem i fpm -f
+
+fpm -C package -s dir -t deb -n "parking_face" -v 0.1.0 -p parking_face.deb
+
+sudo apt-get  remove parking_face
+
+sudo dpkg -i parking_face.deb
+
+#cach caif tu dong start
+sudo nano /etc/xdg/autostart/display.desktop
+sudo gedit /etc/xdg/autostart/display.desktop
+
+[Desktop Entry]
+Type=Application
+Name=parking
+Exec=/bin/bash -c "cd /opt/parking && ./parking"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+
+# cron job in ubuntu auto restart
+sudo crontab -e
+# m h dom mon dow command
+59 23 * * 2 /sbin/shutdown -r
+
+ctr+o => ctr+c => ctr+x => ctr+y => Enter
+
+# neu loi xoa build package dist
